@@ -1,0 +1,21 @@
+# Secrets — never commit
+.env
+*.env
+**/.env
+**/secrets*
+
+# Runtime state (wallet balance, ledger, schedules, receipts, test proofs)
+**/state/
+state/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Logs
+*.log
+
+# OS / editor
+.DS_Store
+Thumbs.db

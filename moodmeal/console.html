@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MoodMeal — Agent Operations Console</title>
+<style>
+  :root{
+    --bg:#0b1220; --panel:#121b2e; --line:#1f2b44; --txt:#e6edf7; --mut:#8aa0c2;
+    --green:#22c55e; --red:#f87171; --blue:#3b82f6; --amber:#f59e0b; --purple:#8b5cf6;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--txt);font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif}
+  .wrap{max-width:1100px;margin:0 auto;padding:28px 22px}
+  header{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+  h1{font-size:22px;margin:0;font-weight:800}
+  .sub{color:var(--mut);font-size:13px;margin-bottom:20px}
+  .live{display:inline-flex;align-items:center;gap:7px;font-size:12px;color:var(--mut)}
+  .dot{width:9px;height:9px;border-radius:50%;background:var(--green);animation:p 1.8s infinite}
+  @keyframes p{0%{box-shadow:0 0 0 0 rgba(34,197,94,.5)}70%{box-shadow:0 0 0 8px rgba(34,197,94,0)}100%{box-shadow:0 0 0 0 rgba(34,197,94,0)}}
+  .badge{font-size:11px;font-weight:700;border-radius:999px;padding:3px 10px;border:1px solid}
+  .badge.live{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.4);color:var(--green)}
+  .badge.sim{background:rgba(245,158,11,.12);border-color:rgba(245,158,11,.4);color:var(--amber)}
+  .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:16px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+  .card .k{font-size:12px;color:var(--mut);font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+  .card .v{font-size:26px;font-weight:800;margin-top:6px}
+  .card .v.green{color:var(--green)} .card .v.red{color:var(--red)} .card .v.blue{color:var(--blue)}
+  .card .note{font-size:11.5px;color:var(--mut);margin-top:4px}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px}
+  .panel h2{font-size:13px;margin:0 0 14px;color:var(--mut);text-transform:uppercase;letter-spacing:.6px;font-weight:700}
+  .line{display:flex;justify-content:space-between;padding:7px 0;font-size:14px;border-bottom:1px dashed var(--line)}
+  .line:last-child{border-bottom:none}
+  .pill{background:rgba(139,92,246,.12);border:1px solid rgba(139,92,246,.4);color:#c4b5fd;border-radius:999px;padding:2px 9px;font-size:12px;font-weight:700}
+  .bar{height:9px;border-radius:6px;background:#0a1322;border:1px solid var(--line);overflow:hidden;margin-top:6px}
+  .bar > i{display:block;height:100%;background:linear-gradient(90deg,var(--green),var(--amber))}
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  th{text-align:left;color:var(--mut);font-weight:600;font-size:11.5px;text-transform:uppercase;letter-spacing:.4px;padding:8px 10px;border-bottom:1px solid var(--line)}
+  td{padding:9px 10px;border-bottom:1px solid var(--line)}
+  td.r{text-align:right;font-variant-numeric:tabular-nums}
+  .neg{color:var(--red);font-weight:700} .pos{color:var(--green);font-weight:700}
+  .tag{font-size:11px;color:var(--mut);background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:2px 7px}
+  a.tag:hover{color:var(--blue);border-color:var(--blue)}
+  .empty{color:var(--mut);text-align:center;padding:18px}
+  footer{color:var(--mut);font-size:11.5px;margin-top:18px;text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>🍜 MoodMeal — Agent Operations Console</h1>
+    <span class="live"><span class="dot"></span> live · <span id="updated">—</span> · <span id="modeBadge" class="badge sim">—</span></span>
+  </header>
+  <div class="sub">An autonomous budgeted-purchasing agent: you fund it, delegate a goal, and it decides, pays safely within hard caps, and keeps receipts.</div>
+
+  <div class="cards">
+    <div class="card"><div class="k">Treasury balance</div><div class="v blue" id="balance">$—</div><div class="note" id="available">available —</div></div>
+    <div class="card"><div class="k">Commission earned</div><div class="v green" id="revenue">$—</div><div class="note">MoodMeal's cut (your profit)</div></div>
+    <div class="card"><div class="k">Orders fulfilled</div><div class="v" id="orders">—</div><div class="note" id="autoCount">— autonomous</div></div>
+    <div class="card"><div class="k">Spent on food</div><div class="v red" id="spent">$—</div><div class="note" id="payoutNote">to restaurants + commission</div></div>
+  </div>
+
+  <div class="row2">
+    <div class="panel">
+      <h2>🛡️ Autonomy policy (hard caps, in code)</h2>
+      <div class="line"><span>Auto-pay without asking</span><span class="pill" id="autoUnder">≤ $—</span></div>
+      <div class="line"><span>Max per order</span><span id="perOrder">$—</span></div>
+      <div class="line"><span>Reserve floor (never spend below)</span><span id="reserve">$—</span></div>
+      <div class="line" style="border-bottom:none"><span>Daily spend</span><span id="dailyTxt">$— / $—</span></div>
+      <div class="bar"><i id="dailyBar" style="width:0%"></i></div>
+    </div>
+    <div class="panel">
+      <h2>⏰ Scheduled standing orders</h2>
+      <div id="schedule"><div class="empty">No standing orders yet — set one with “order my lunch at noon.”</div></div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2>🧾 Transaction ledger (receipts)</h2>
+    <table>
+      <thead><tr><th>Time</th><th>Invoice</th><th>Item</th><th class="r">Amount</th><th class="r">→ Restaurant</th><th class="r">Commission</th><th>Payment</th></tr></thead>
+      <tbody id="ledger"><tr><td colspan="7" class="empty">loading…</td></tr></tbody>
+    </table>
+  </div>
+
+  <footer>Reads <code>state/wallet.json</code> + <code>config.json</code> + <code>data/menu.json</code> live · refreshes every 3s · MoodMeal on Hermes</footer>
+</div>
+
+<script>
+const yen = n => "$" + (Math.round((n||0)*100)/100).toLocaleString();
+let DISH = {};
+
+async function getJSON(path, fallback){ try { return await (await fetch(path+"?_="+Date.now())).json(); } catch(e){ return fallback; } }
+
+async function load(){
+  const w = await getJSON("state/wallet.json", null);
+  if(!w) return;
+  const cfg = await getJSON("config.json", {per_order_cap:20, order_fee_rate:0.05, reserve:0, daily_spend_cap:null, auto_approve_under:0});
+  const menu = await getJSON("data/menu.json", null);
+  if(menu && menu.dishes) DISH = Object.fromEntries(menu.dishes.map(d=>[d.id, d.name]));
+  const sched = await getJSON("state/schedule.json", []);
+
+  const led = w.ledger || [];
+  const now = Date.now()/1000;
+  let fees=0, food=0, orders=0, autos=0, spent24=0;
+  for(const e of led){
+    fees += e.fee_revenue || 0;
+    if(e.type==="food_spend"){ food += Math.abs(e.amount); orders++; if(e.auto) autos++;
+      if(now - (e.ts||0) < 86400) spent24 += Math.abs(e.amount); }
+  }
+
+  document.getElementById("balance").textContent = yen(w.balance);
+  document.getElementById("available").textContent = "available " + yen((w.balance||0) - (cfg.reserve||0));
+  document.getElementById("revenue").textContent = yen(fees);
+  document.getElementById("orders").textContent = orders;
+  document.getElementById("autoCount").textContent = autos + " autonomous";
+  document.getElementById("spent").textContent = yen(food);
+
+  document.getElementById("autoUnder").textContent = "≤ " + yen(cfg.auto_approve_under);
+  document.getElementById("perOrder").textContent = yen(cfg.per_order_cap);
+  document.getElementById("reserve").textContent = yen(cfg.reserve);
+  const dc = cfg.daily_spend_cap;
+  document.getElementById("dailyTxt").textContent = yen(spent24) + " / " + (dc!=null?yen(dc):"∞");
+  document.getElementById("dailyBar").style.width = (dc? Math.min(100, 100*spent24/dc) : 0) + "%";
+
+  const hasStripe = led.some(e=>e.mode==="stripe_test");   // real Stripe = top-ups
+  const mb = document.getElementById("modeBadge");
+  mb.textContent = hasStripe ? "LIVE · Stripe test" : "wallet";
+  mb.className = "badge " + (hasStripe ? "live" : "sim");
+  document.getElementById("updated").textContent = new Date().toLocaleTimeString();
+
+  // schedule panel
+  const sc = document.getElementById("schedule");
+  if(Array.isArray(sched) && sched.length){
+    sc.innerHTML = sched.map(s=>`<div class="line"><span>⏰ ${s.when||s.recurrence||"—"} · <span class="tag">${s.goal||"order"}</span></span><span class="pill">auto ≤ ${yen(s.budget)}</span></div>`).join("");
+  } else {
+    sc.innerHTML = '<div class="empty">No standing orders yet — set one with “order my lunch at noon.”</div>';
+  }
+
+  // ledger
+  const tb = document.getElementById("ledger");
+  if(!led.length){ tb.innerHTML = '<tr><td colspan="7" class="empty">No transactions yet — order something in the MoodMeal chat.</td></tr>'; return; }
+  tb.innerHTML = led.slice().reverse().map(e=>{
+    const t = new Date((e.ts||0)*1000).toLocaleTimeString();
+    const item = DISH[e.dish_id] || e.dish_id || e.type;
+    const amt = e.amount<0 ? `<span class="neg">−${yen(Math.abs(e.amount))}</span>` : `<span class="pos">+${yen(e.amount)}</span>`;
+    const isOrder = e.type==="food_spend";
+    const payoutVal = e.merchant_payout!=null ? e.merchant_payout : (isOrder ? Math.abs(e.amount)-(e.fee_revenue||0) : null);
+    const payout = isOrder ? `<span style="color:var(--mut)">${yen(payoutVal)}</span>` : "—";
+    const fee = e.fee_revenue ? `<span class="pos">+${yen(e.fee_revenue)}</span>` : "—";
+    const pay = e.receipt_url
+        ? `<a class="tag" href="${e.receipt_url}" target="_blank">${e.payment_id||"receipt"} ↗</a>`
+        : `<span class="tag">${e.payment_id||"—"}</span>`;
+    const auto = e.auto ? ' <span class="pill">auto</span>' : '';
+    return `<tr><td>${t}</td><td><span class="tag">${e.invoice_no||"—"}</span></td><td>${item}${auto}</td><td class="r">${amt}</td><td class="r">${payout}</td><td class="r">${fee}</td><td>${pay}</td></tr>`;
+  }).join("");
+}
+load(); setInterval(load, 3000);
+</script>
+</body>
+</html>

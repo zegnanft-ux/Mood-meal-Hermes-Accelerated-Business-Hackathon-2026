@@ -1,0 +1,32 @@
+{
+  "currency": "USD",
+  "merchant_id": "mock_merchant_001",
+  "dishes": [
+    { "id": "d01", "name": "Katsu Curry Rice",         "price": 16, "calories": 780, "protein_g": 24, "carb_g": 95,  "fat_g": 30, "ingredients": "breaded fried pork cutlet, Japanese curry sauce, white rice" },
+    { "id": "d02", "name": "Tonkotsu Ramen",           "price": 18, "calories": 850, "protein_g": 35, "carb_g": 90,  "fat_g": 38, "ingredients": "rich pork-bone broth, wheat noodles, chashu pork, soft egg" },
+    { "id": "d03", "name": "Century-Egg Congee",       "price": 12, "calories": 320, "protein_g": 10, "carb_g": 55,  "fat_g": 6,  "ingredients": "slow-cooked rice porridge, century egg, ginger, scallion" },
+    { "id": "d04", "name": "Grilled Chicken Salad",    "price": 19, "calories": 420, "protein_g": 38, "carb_g": 18,  "fat_g": 22, "ingredients": "grilled chicken breast, mixed greens, cherry tomato, vinaigrette" },
+    { "id": "d05", "name": "Beef & Broccoli Rice Bowl","price": 17, "calories": 560, "protein_g": 32, "carb_g": 60,  "fat_g": 20, "ingredients": "stir-fried beef, broccoli, garlic sauce, steamed rice" },
+    { "id": "d06", "name": "Mapo Tofu Set",            "price": 15, "calories": 610, "protein_g": 26, "carb_g": 65,  "fat_g": 26, "ingredients": "soft tofu, ground pork, spicy chili-bean sauce, rice" },
+    { "id": "d07", "name": "Salmon Onigiri x2",        "price": 13, "calories": 380, "protein_g": 14, "carb_g": 68,  "fat_g": 6,  "ingredients": "two rice balls, flaked salmon, nori seaweed" },
+    { "id": "d08", "name": "Veggie Soba Noodles",      "price": 14, "calories": 450, "protein_g": 14, "carb_g": 80,  "fat_g": 8,  "ingredients": "chilled buckwheat soba, cucumber, edamame, sesame dressing" },
+    { "id": "d09", "name": "Cheese Baked Rice",        "price": 20, "calories": 900, "protein_g": 22, "carb_g": 100, "fat_g": 42, "ingredients": "baked rice, cream sauce, melted mozzarella, ham" },
+    { "id": "d10", "name": "Wonton Soup",              "price": 11, "calories": 300, "protein_g": 16, "carb_g": 35,  "fat_g": 9,  "ingredients": "pork-and-shrimp wontons, clear broth, scallion" },
+
+    { "id": "d11", "name": "Spicy Tuna Poke Bowl",     "price": 22, "calories": 520, "protein_g": 30, "carb_g": 62,  "fat_g": 16, "ingredients": "raw tuna, sushi rice, avocado, edamame, cucumber, spicy mayo" },
+    { "id": "d12", "name": "Chicken Caesar Wrap",      "price": 16, "calories": 480, "protein_g": 30, "carb_g": 42,  "fat_g": 20, "ingredients": "grilled chicken, romaine, parmesan, caesar dressing, tortilla" },
+    { "id": "d13", "name": "Avocado Toast",            "price": 15, "calories": 360, "protein_g": 10, "carb_g": 38,  "fat_g": 19, "ingredients": "sourdough, smashed avocado, cherry tomato, chili flakes, lemon" },
+    { "id": "d14", "name": "Beef Pho",                 "price": 19, "calories": 480, "protein_g": 28, "carb_g": 62,  "fat_g": 10, "ingredients": "clear beef broth, rice noodles, sliced beef, herbs, lime" },
+    { "id": "d15", "name": "Kimchi Fried Rice",        "price": 16, "calories": 650, "protein_g": 18, "carb_g": 85,  "fat_g": 22, "ingredients": "fried rice, kimchi, gochujang, fried egg, sesame oil" },
+    { "id": "d16", "name": "Pad Thai",                 "price": 18, "calories": 700, "protein_g": 22, "carb_g": 90,  "fat_g": 26, "ingredients": "rice noodles, shrimp, peanuts, bean sprouts, tamarind sauce, egg" },
+    { "id": "d17", "name": "Greek Yogurt Parfait",     "price": 13, "calories": 290, "protein_g": 18, "carb_g": 40,  "fat_g": 7,  "ingredients": "chilled greek yogurt, granola, mixed berries, honey" },
+    { "id": "d18", "name": "Miso Soup + Edamame",      "price": 10, "calories": 220, "protein_g": 16, "carb_g": 20,  "fat_g": 8,  "ingredients": "miso broth, tofu, wakame, scallion, salted edamame" },
+
+    { "id": "d19", "name": "Mango Smoothie Bowl",      "price": 17, "calories": 330, "protein_g": 8,  "carb_g": 66,  "fat_g": 5,  "ingredients": "blended frozen mango, banana, coconut yogurt, granola topping" },
+    { "id": "d20", "name": "Red Bean Shaved Ice",      "price": 14, "calories": 350, "protein_g": 6,  "carb_g": 72,  "fat_g": 4,  "ingredients": "shaved ice, sweet red bean, condensed milk, mochi bits" },
+    { "id": "d21", "name": "Iced Matcha Latte",        "price": 12, "calories": 180, "protein_g": 6,  "carb_g": 26,  "fat_g": 5,  "ingredients": "iced matcha, milk, light syrup" },
+    { "id": "d22", "name": "Cold Brew Coffee",         "price": 11, "calories": 15,  "protein_g": 0,  "carb_g": 3,   "fat_g": 0,  "ingredients": "slow-steeped cold brew coffee, ice" },
+    { "id": "d23", "name": "Iced Lemon Tea",           "price": 9,  "calories": 90,  "protein_g": 0,  "carb_g": 23,  "fat_g": 0,  "ingredients": "black tea, fresh lemon, ice, light sugar" },
+    { "id": "d24", "name": "Watermelon Juice",         "price": 10, "calories": 110, "protein_g": 2,  "carb_g": 27,  "fat_g": 0,  "ingredients": "fresh-pressed watermelon, ice" }
+  ]
+}

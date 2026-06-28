@@ -1,0 +1,12 @@
+{
+  "currency": "USD",
+  "per_order_cap": 20,
+  "wallet_total_cap": 100,
+  "order_fee_rate": 0.05,
+  "starting_balance": 100,
+  "daily_calorie_reference": 2000,
+  "receipt_email": "",
+  "auto_approve_under": 15,
+  "daily_spend_cap": null,
+  "reserve": 10
+}
